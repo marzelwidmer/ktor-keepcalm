@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ktor
+  labels:
+    app: ktor
+spec:
+  selector:
+    matchLabels:
+      app: ktor
+  template:
+    metadata:
+      labels:
+        app: ktor
+    spec:
+      containers:
+        - name: ktor
+          image: ktor-keepcalm:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 2
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 2
